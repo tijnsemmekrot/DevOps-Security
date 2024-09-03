@@ -30,7 +30,7 @@ jobs:
             tijnsemmekrot/student-app:latest
   test:
     name: Test
-    needs: [ scan ]
+    needs: [ Build ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
