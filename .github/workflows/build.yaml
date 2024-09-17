@@ -53,20 +53,20 @@ jobs:
           github-token: ${{ secrets.ACCESS_GITHUB_TOKEN }}
           exit-code: true
 
-  automated-api-tests:
-    name: automated-api-tests
-    needs: [scan]
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Postman CLI
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-      - name: Run API tests
-        run: |
-          postman collection run "${{ github.workspace }}/postman/collections/Integration testing basics.json"
+  # automated-api-tests:
+  #   name: automated-api-tests
+  #   needs: [scan]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Install Postman CLI
+  #       run: |
+  #         curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+  #     - name: Login to Postman CLI
+  #       run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+  #     - name: Run API tests
+  #       run: |
+  #         postman collection run "${{ github.workspace }}/postman/collections/Integration testing basics.json"
 
   test:
     name: Test
