@@ -54,6 +54,8 @@ jobs:
           exit-code: true
 
   automated-api-tests:
+    name: automated-api-tests
+    needs: [scan]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -68,7 +70,7 @@ jobs:
 
   test:
     name: Test
-    needs: [ test-api ]
+    needs: [ automated-api-tests ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
