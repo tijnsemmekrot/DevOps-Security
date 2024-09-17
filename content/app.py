@@ -44,6 +44,7 @@ def index():
     return templates.main_page(escaped_quotes, request.user_id, error_message)
 
 
+#
 # The quote comments page
 @app.route("/quotes/<int:quote_id>")
 def get_comments_page(quote_id):
