@@ -21,6 +21,7 @@ def log_request():
 
 
 # Set user_id on request if user is logged in, or else set it to None.
+# test hashtag
 @app.before_request
 def check_authentication():
     if 'user_id' in request.cookies:
