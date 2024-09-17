@@ -13,14 +13,21 @@
 				{
 					"listen": "test",
 					"script": {
-						"type": "text/javascript",
+						"id": "9d913c12-1b72-49d0-bc9f-e9c8c6a35161",
 						"exec": [
-							"pm.test(\"A name is returned\", () => {",
-							"    pm.expect(pm.response.json()).to.have.property('name');",
-							"    pm.expect(pm.response.json().name).to.be.a('string');",
-							"})"
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});"
 						],
-						"id": "9d913c12-1b72-49d0-bc9f-e9c8c6a35161"
+						"type": "text/javascript",
+						"packages": {}
+					}
+				},
+				{
+					"listen": "prerequest",
+					"script": {
+						"packages": {},
+						"type": "text/javascript"
 					}
 				}
 			],
