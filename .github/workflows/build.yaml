@@ -54,10 +54,12 @@ jobs:
           exit-code: true
 
   test-api:
+    name: test-api
+    needs: [scan]
     runs-on: ubuntu-latest
     steps:
       # Checks-out your repository under $GITHUB_WORKSPACE, so your job can access it
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
 
 
       # INstall Node on the runner
@@ -94,7 +96,7 @@ jobs:
 
   test:
     name: Test
-    needs: [ scan ]
+    needs: [ test-api ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
