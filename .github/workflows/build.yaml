@@ -70,7 +70,8 @@ jobs:
 
   test:
     name: Test
-    needs: [ automated-api-tests ]
+    needs: [scan]
+    #needs: [ automated-api-tests ]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
