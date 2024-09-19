@@ -1,4 +1,4 @@
-from flask import Flask, request, redirect, make_response
+from flask import Flask, request, redirect, make_response, escape
 import sqlite3
 import urllib
 import quoter_templates as templates
@@ -21,6 +21,7 @@ def log_request():
 
 
 # Set user_id on request if user is logged in, or else set it to None.
+# test hashtag
 @app.before_request
 def check_authentication():
     if 'user_id' in request.cookies:
@@ -28,12 +29,19 @@ def check_authentication():
     else:
         request.user_id = None
 
+# # The main page
+# @app.route("/")
+# def index():
+#     quotes = db.execute("select id, text, attribution from quotes order by id").fetchall()
+#     return templates.main_page(quotes, request.user_id, request.args.get('error'))
+# changed to
 
-# The main page
 @app.route("/")
 def index():
-    quotes = db.execute("select id, text, attribution from quotes order by id").fetchall()
-    return templates.main_page(quotes, request.user_id, request.args.get('error'))
+    quotes = db.execute("SELECT id, text, attribution FROM quotes ORDER BY id").fetchall()
+    error_message = escape(request.args.get('error', ''))  # Explicitly escape user input
+    escaped_quotes = [(escape(q['text']), escape(q['attribution'])) for q in quotes]  # Escape quotes
+    return templates.main_page(escaped_quotes, request.user_id, error_message)
 
 
 # The quote comments page
@@ -48,7 +56,10 @@ def get_comments_page(quote_id):
 @app.route("/quotes", methods=["POST"])
 def post_quote():
     with db:
-        db.execute(f"""insert into quotes(text,attribution) values("{request.form['text']}","{request.form['attribution']}")""")
+        # this was the code first
+        # db.execute(f"""insert into quotes(text,attribution) values("{request.form['text']}","{request.form['attribution']}")""")
+        # changed to :
+        db.execute("INSERT INTO quotes(text, attribution) VALUES (%s, %s)", (request.form['text'], request.form['attribution']))
     return redirect("/#bottom")
 
 
@@ -56,7 +67,7 @@ def post_quote():
 @app.route("/quotes/<int:quote_id>/comments", methods=["POST"])
 def post_comment(quote_id):
     with db:
-        db.execute(f"""insert into comments(text,quote_id,user_id) values("{request.form['text']}",{quote_id},{request.user_id})""")
+        db.execute("""INSERT INTO quotes(text, attribution) VALUES (%s, %s)""", (request.form['text'], request.form['attribution']))
     return redirect(f"/quotes/{quote_id}#bottom")
 
 
@@ -66,7 +77,9 @@ def signin():
     username = request.form["username"].lower()
     password = request.form["password"]
 
-    user = db.execute(f"select id, password from users where name='{username}'").fetchone()
+    #user = db.execute(f"select id, password from users where name='{username}'").fetchone()
+    # changed to
+    user = db.execute("SELECT id, password FROM users WHERE name = %s", (username,)).fetchone()
     if user: # user exists
         if password != user['password']:
             # wrong! redirect to main page with an error message
@@ -75,10 +88,15 @@ def signin():
     else: # new sign up
         with db:
             cursor = db.execute(f"insert into users(name,password) values('{username}', '{password}')")
+            #changed to
+            #cursor = db.execute("INSERT INTO users(name, password) VALUES (%s, %s)", (username, password))
             user_id = cursor.lastrowid
     
     response = make_response(redirect('/'))
+    # this was the code first
     response.set_cookie('user_id', str(user_id))
+    # changed to
+    #response.set_cookie('user_id', str(user_id), httponly=True, secure=True, samesite='Lax')
     return response
 
 
