@@ -87,16 +87,16 @@ def signin():
         user_id = user['id']
     else: # new sign up
         with db:
-            cursor = db.execute(f"insert into users(name,password) values('{username}', '{password}')")
+            #cursor = db.execute(f"insert into users(name,password) values('{username}', '{password}')")
             #changed to
-            #cursor = db.execute("INSERT INTO users(name, password) VALUES (%s, %s)", (username, password))
+            cursor = db.execute("INSERT INTO users(name, password) VALUES (%s, %s)", (username, password))
             user_id = cursor.lastrowid
     
     response = make_response(redirect('/'))
     # this was the code first
-    response.set_cookie('user_id', str(user_id))
+    # response.set_cookie('user_id', str(user_id))
     # changed to
-    #response.set_cookie('user_id', str(user_id), httponly=True, secure=True, samesite='Lax')
+    response.set_cookie('user_id', str(user_id), httponly=True, secure=True, samesite='Lax')
     return response
 
 
