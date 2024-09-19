@@ -21,13 +21,13 @@ def log_request():
 
 
 # Set user_id on request if user is logged in, or else set it to None.
-# test hashtag
 @app.before_request
 def check_authentication():
     if 'user_id' in request.cookies:
         request.user_id = int(request.cookies['user_id'])
     else:
         request.user_id = None
+
 
 # # The main page
 # @app.route("/")
@@ -59,7 +59,7 @@ def post_quote():
         # this was the code first
         # db.execute(f"""insert into quotes(text,attribution) values("{request.form['text']}","{request.form['attribution']}")""")
         # changed to :
-        db.execute("INSERT INTO quotes(text, attribution) VALUES (%s, %s)", (request.form['text'], request.form['attribution']))
+        db.execute("INSERT INTO quotes(text, attribution) VALUES (?, ?)", (request.form['text'], request.form['attribution']))
     return redirect("/#bottom")
 
 
@@ -67,7 +67,7 @@ def post_quote():
 @app.route("/quotes/<int:quote_id>/comments", methods=["POST"])
 def post_comment(quote_id):
     with db:
-        db.execute("""INSERT INTO quotes(text, attribution) VALUES (%s, %s)""", (request.form['text'], request.form['attribution']))
+        db.execute("""INSERT INTO comments(text, quote_id, user_id, time) VALUES (?, ?, ?, CURRENT_TIMESTAMP)""", (request.form['text'], quote_id, request.user_id))
     return redirect(f"/quotes/{quote_id}#bottom")
 
 
@@ -79,7 +79,7 @@ def signin():
 
     #user = db.execute(f"select id, password from users where name='{username}'").fetchone()
     # changed to
-    user = db.execute("SELECT id, password FROM users WHERE name = %s", (username,)).fetchone()
+    user = db.execute("SELECT id, password FROM users WHERE name = ?", (username,)).fetchone()
     if user: # user exists
         if password != user['password']:
             # wrong! redirect to main page with an error message
@@ -89,7 +89,7 @@ def signin():
         with db:
             #cursor = db.execute(f"insert into users(name,password) values('{username}', '{password}')")
             #changed to
-            cursor = db.execute("INSERT INTO users(name, password) VALUES (%s, %s)", (username, password))
+            cursor = db.execute("INSERT INTO users(name, password) VALUES (?, ?)", (username, password))
             user_id = cursor.lastrowid
     
     response = make_response(redirect('/'))
