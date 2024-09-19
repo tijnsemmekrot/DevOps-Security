@@ -32,8 +32,14 @@ def check_authentication():
 # The main page
 @app.route("/")
 def index():
-    quotes = db.execute("select id, text, attribution from quotes order by id").fetchall()
-    return templates.main_page(quotes, request.user_id, request.args.get('error'))
+    quotes = db.execute("SELECT id, text, attribution FROM quotes ORDER BY id").fetchall()
+    error_message = escape(request.args.get('error', ''))  # Explicitly escape user input
+    
+    # Correct the tuple structure for escaped_quotes
+    escaped_quotes = [{'id': q['id'], 'text': escape(q['text']), 'attribution': escape(q['attribution'])} for q in quotes]  # Escape quotes
+
+    return templates.main_page(escaped_quotes, request.user_id, error_message)
+
 # changed to
 
 # @app.route("/")
