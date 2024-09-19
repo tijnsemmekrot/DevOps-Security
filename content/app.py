@@ -30,6 +30,12 @@ def check_authentication():
         request.user_id = None
 
 # The main page
+# @app.route("/")
+# def index():
+#     quotes = db.execute("select id, text, attribution from quotes order by id").fetchall()
+#     return templates.main_page(quotes, request.user_id, request.args.get('error'))
+# changed to
+
 @app.route("/")
 def index():
     quotes = db.execute("SELECT id, text, attribution FROM quotes ORDER BY id").fetchall()
@@ -40,14 +46,6 @@ def index():
 
     return templates.main_page(escaped_quotes, request.user_id, error_message)
 
-# changed to
-
-# @app.route("/")
-# def index():
-#     quotes = db.execute("SELECT id, text, attribution FROM quotes ORDER BY id").fetchall()
-#     error_message = escape(request.args.get('error', ''))  # Explicitly escape user input
-#     escaped_quotes = [(escape(q['text']), escape(q['attribution'])) for q in quotes]  # Escape quotes
-#     return templates.main_page(escaped_quotes, request.user_id, error_message)
 
 
 # The quote comments page
