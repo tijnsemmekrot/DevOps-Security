@@ -58,9 +58,9 @@ def page(content,user_id,title,error=None):
 <label class="link" for="quoteCheckbox">Add a quote</label>
 <a class="link" href="/signout">Sign out</a>
 """
-    else:http://184.72.65.98:30000/
+    else:
         links = f"""
-<label class="link" for="signinCheckbox">Inloggen hier voor tijn</label>
+<label class="link" for="signinCheckbox">Inloggen hier voor tijn.</label>
 """
 
     return f"""<!DOCTYPE html>
