@@ -17,6 +17,9 @@
 						"exec": [
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
+							"});",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
 							"});"
 						],
 						"type": "text/javascript",
@@ -26,8 +29,12 @@
 				{
 					"listen": "prerequest",
 					"script": {
-						"packages": {},
-						"type": "text/javascript"
+						"id": "5281e542-467d-4062-83e7-454bd8df0dc3",
+						"exec": [
+							""
+						],
+						"type": "text/javascript",
+						"packages": {}
 					}
 				}
 			],
@@ -48,19 +55,15 @@
 					}
 				},
 				"url": {
-					"raw": "{{baseUrl}}/my-name?token={{token}}",
+					"raw": "http://184.72.65.98:30000",
+					"protocol": "http",
 					"host": [
-						"{{baseUrl}}"
+						"184",
+						"72",
+						"65",
+						"98"
 					],
-					"path": [
-						"my-name"
-					],
-					"query": [
-						{
-							"key": "token",
-							"value": "{{token}}"
-						}
-					]
+					"port": "30000"
 				},
 				"description": "This request uses the saved `token` collection variable to access a secret 'name' stored against that token.\n\nIn this request, we used the `token` collection variable as a query param to fetch the name generated for that token. We have added a test to check that a name is correctly returned."
 			},
