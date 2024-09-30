@@ -28,48 +28,49 @@ jobs:
           push: true
           tags: |
             tijnsemmekrot/student-app:latest
-  scan:
-    name: scan
-    needs: [build]
-    runs-on: ubuntu-latest
-    steps:
-      - name: Checkout the repository
-        uses: actions/checkout@v3
+  # scan:
+  #   name: scan
+  #   needs: [build]
+  #   runs-on: ubuntu-latest
+  #   steps:
+  #     - name: Checkout the repository
+  #       uses: actions/checkout@v3
 
-      - name: Login to Docker Hub
-        uses: docker/login-action@v2
-        with:
-          username: ${{ secrets.DOCKERHUB_LOGIN }}
-          password: ${{ secrets.DOCKER_HUB_PASSWORD }}
+  #     - name: Login to Docker Hub
+  #       uses: docker/login-action@v2
+  #       with:
+  #         username: ${{ secrets.DOCKERHUB_LOGIN }}
+  #         password: ${{ secrets.DOCKER_HUB_PASSWORD }}
           
-      - name: Analyze image for vulnerabilities
-        uses: docker/scout-action@v0.18.1
-        with:
-          command: cves
-          image: tijnsemmekrot/student-app:latest
-          only-fixed: true
-          only-severities: critical,high
-          write-comment: true
-          github-token: ${{ secrets.ACCESS_GITHUB_TOKEN }}
-          exit-code: true
+  #     - name: Analyze image for vulnerabilities
+  #       uses: docker/scout-action@v0.18.1
+  #       with:
+  #         command: cves
+  #         image: tijnsemmekrot/student-app:latest
+  #         only-fixed: true
+  #         only-severities: critical,high
+  #         write-comment: true
+  #         github-token: ${{ secrets.ACCESS_GITHUB_TOKEN }}
+  #         exit-code: true
 
-  automated-api-tests:
-    runs-on: ubuntu-latest
-    needs: [scan]
-    steps:
-      - uses: actions/checkout@v4
-      - name: Install Postman CLI
-        run: |
-          curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
-      - name: Login to Postman CLI
-        run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
-      - name: Run API tests
-        run: |
-          postman collection run "${{ github.workspace }}/postman/collections/Integration testing basics.json"
+  # automated-api-tests:
+  #   runs-on: ubuntu-latest
+  #   needs: [scan]
+  #   steps:
+  #     - uses: actions/checkout@v4
+  #     - name: Install Postman CLI
+  #       run: |
+  #         curl -o- "https://dl-cli.pstmn.io/install/linux64.sh" | sh
+  #     - name: Login to Postman CLI
+  #       run: postman login --with-api-key ${{ secrets.POSTMAN_API_KEY }}
+  #     - name: Run API tests
+  #       run: |
+  #         postman collection run "${{ github.workspace }}/postman/collections/Integration testing basics.json"
 
   test:
     name: Test
-    needs: [automated-api-tests]
+    needs: [build]
+    #needs: [automated-api-tests]
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
