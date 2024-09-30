@@ -18,6 +18,9 @@
 							"pm.test(\"Status code is 200\", function () {",
 							"    pm.response.to.have.status(200);",
 							"});",
+							"pm.test(\"Status code is 200\", function () {",
+							"    pm.response.to.have.status(200);",
+							"});",
 							"pm.test(\"Body matches string\", function () {",
 							"    pm.expect(pm.response.text()).to.include(\"Einstein\");",
 							"});",
@@ -59,13 +62,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://34.229.200.234:30000",
+					"raw": "http://54.84.171.55:30000",
 					"protocol": "http",
 					"host": [
-						"34",
-						"229",
-						"200",
-						"234"
+						"54",
+						"84",
+						"171",
+						"55"
 					],
 					"port": "30000"
 				},
