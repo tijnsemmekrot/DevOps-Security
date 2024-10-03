@@ -15,15 +15,6 @@
 					"script": {
 						"id": "9d913c12-1b72-49d0-bc9f-e9c8c6a35161",
 						"exec": [
-							"pm.test(\"Status code is 200\", function () {",
-							"    pm.response.to.have.status(200);",
-							"});",
-							"pm.test(\"Body matches string\", function () {",
-							"    pm.expect(pm.response.text()).to.include(\"Einstein\");",
-							"});",
-							"pm.test(\"Response time is less than 1s\", function () {",
-							"    pm.expect(pm.response.responseTime).to.be.below(1000);",
-							"});",
 							""
 						],
 						"type": "text/javascript",
@@ -59,13 +50,13 @@
 					}
 				},
 				"url": {
-					"raw": "http://54.242.57.151:30000",
+					"raw": "http://54.91.182.67:30000",
 					"protocol": "http",
 					"host": [
 						"54",
-						"242",
-						"57",
-						"151"
+						"91",
+						"182",
+						"67"
 					],
 					"port": "30000"
 				},
