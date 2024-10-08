@@ -71,6 +71,7 @@ jobs:
     name: Test
     needs: [build]
     # needs: [automated-api-tests]
+    #
     runs-on: ubuntu-latest
     steps:
       - name: Checkout the repository
